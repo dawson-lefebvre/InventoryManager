@@ -29,10 +29,14 @@ public class InventoryMenuingManager : MonoBehaviour
 
     public void SwitchSlots(UIItemSlot slotToSwitch)
     {
-        ItemScriptableObject objToSwitch;
-        objToSwitch = currentSelectedSlot.currentItem;
-        currentSelectedSlot.currentItem = slotToSwitch.currentItem;
-        slotToSwitch.currentItem = objToSwitch;
+        if(currentSelectedSlot.currentItem == null || slotToSwitch.slotType == ItemType.Any || slotToSwitch.slotType == currentSelectedSlot.currentItem.type)
+        {
+            ItemScriptableObject objToSwitch;
+            objToSwitch = currentSelectedSlot.currentItem;
+            currentSelectedSlot.currentItem = slotToSwitch.currentItem;
+            slotToSwitch.currentItem = objToSwitch;
+        }
+
         currentSelectedSlot.UpdateItem();
         slotToSwitch.UpdateItem();
         currentSelectedSlot = null;

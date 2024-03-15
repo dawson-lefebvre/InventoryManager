@@ -9,7 +9,7 @@ public class FirstPersonPlayerController : MonoBehaviour
 {
     //Components
     Rigidbody rb;
-    [SerializeField] GameObject cam, interactSphere, lineOfSightSphere;
+    [SerializeField] GameObject cam;
     [SerializeField] float interactDistance = 1;
     InventoryManager inventoryManager;
     // Start is called before the first frame update
@@ -70,16 +70,15 @@ public class FirstPersonPlayerController : MonoBehaviour
             }
         }
 
-        //Raycast for interaction
-        RaycastHit interactHit;
-        Physics.Raycast(cam.transform.position, cam.transform.forward, out interactHit, interactDistance);
-        interactSphere.transform.position = interactHit.point;
+        if(OpenInventoryAction.WasPressedThisFrame())
+        {
+            inventoryManager.OpenCloseInventory();
+        }
 
-        //Raycast for lineOfSight
-        RaycastHit lineOfSightHit;
-        Physics.Raycast(cam.transform.position, cam.transform.forward, out lineOfSightHit);
-        lineOfSightSphere.transform.position = lineOfSightHit.point;
-
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     private void LateUpdate()

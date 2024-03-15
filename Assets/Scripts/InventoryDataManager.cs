@@ -10,7 +10,7 @@ public static class InventoryDataManager
     {
         //Player is always index 0
         Directory.CreateDirectory("SaveData/Inventories");
-        Stream stream = File.Open($"SaveData/Inventories/Inventory{index}", FileMode.Create);
+        Stream stream = File.Open($"SaveData/Inventories/Inventory{index}.xml", FileMode.Create);
         XmlSerializer serializer = new XmlSerializer(typeof(InventoryData));
         serializer.Serialize(stream, inventoryData);
         stream.Close();
@@ -18,9 +18,10 @@ public static class InventoryDataManager
 
     public static InventoryData LoadInventory(int index)
     {
-        if (File.Exists($"SaveData/Inventories/Inventory{index}"))
+        Directory.CreateDirectory("SaveData/Inventories");
+        if (File.Exists($"SaveData/Inventories/Inventory{index}.xml"))
         {
-            Stream stream = File.Open($"SaveData/Inventories/Inventory{index}", FileMode.Open);
+            Stream stream = File.Open($"SaveData/Inventories/Inventory{index}.xml", FileMode.Open);
             XmlSerializer serializer = new XmlSerializer(typeof(InventoryData));
             InventoryData loadedData = (InventoryData)serializer.Deserialize(stream);
             stream.Close();
@@ -28,18 +29,32 @@ public static class InventoryDataManager
         }
         else
         {
-            return new InventoryData(9);
+            return null;
         }
     }
 }
 
 public class InventoryData
 {
-    public UIItemSlot[] slots;
+    public SlotData[] slots;
 
-    public InventoryData(int numOfSlots)
+    public InventoryData()
     {
-        slots = new UIItemSlot[numOfSlots];
+        slots = new SlotData[9];
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i] = new SlotData();
+        }
     }
 }
+
+public class SlotData
+{
+    public ItemScriptableObject item;
+    public SlotData()
+    {
+        item = null;
+    }
+}
+
 

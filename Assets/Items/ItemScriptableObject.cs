@@ -7,4 +7,12 @@ public class ItemScriptableObject : ScriptableObject
 {
     public string itemName;
     public int id;
+    public ItemType type;
+}
+
+public enum ItemType
+{
+    Any,
+    Weapon,
+    Armor
 }

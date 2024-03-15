@@ -12,12 +12,13 @@ public class UIItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public bool isSelected = false;
     [SerializeField] public ItemScriptableObject currentItem;
     TextMeshProUGUI slotText;
-    private void Start()
+    [SerializeField] public ItemType slotType;
+    private void OnEnable()
     {
         uiImage = GetComponent<Image>();
         slotText = GetComponentInChildren<TextMeshProUGUI>();
 
-        UpdateItem();
+        //UpdateItem();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

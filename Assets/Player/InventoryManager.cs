@@ -11,21 +11,42 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] List<UIItemSlot> inventorySlots;
     public void OpenCloseInventory()
     {
-        if(!inventoryIsOpen )
+        if(!inventoryIsOpen)
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             inventoryIsOpen = true;
             inventoryPanel.SetActive(true);
             inventoryData = InventoryDataManager.LoadInventory(inventoryIndex);
-            for (int i = 0; i < inventoryData.slots.Length; i++)
+            if(inventoryData != null )
             {
-                inventorySlots[i] = inventoryData.slots[i];
-                inventorySlots[i].UpdateItem();
+                for (int i = 0; i < inventoryData.slots.Length; i++)
+                {
+                    inventorySlots[i].currentItem = inventoryData.slots[i].item;
+                    inventorySlots[i].UpdateItem();
+                }
+            }
+            else
+            {
+                inventoryData = new InventoryData();
+                for (int i = 0; i < inventorySlots.Count; i++)
+                {
+                    inventorySlots[i].UpdateItem();
+                }
             }
         }
         else
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             inventoryIsOpen = false;
             inventoryPanel.SetActive(false);
+
+            for (int i = 0; i < inventorySlots.Count; i++)
+            {
+                inventoryData.slots[i].item = inventorySlots[i].currentItem;
+            }
+
             InventoryDataManager.SaveInventory(inventoryIndex, inventoryData);
         }
     }
